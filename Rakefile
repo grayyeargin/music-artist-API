@@ -12,11 +12,11 @@ namespace :db do
 
   desc "seed artists!"
   task :seed_artists => :environment do
-    url = "http://en.wikipedia.org/wiki/List_of_hard_rock_musicians_(N%E2%80%93Z)"
+    url = "http://en.wikipedia.org/wiki/Downtempo"
     response = Nokogiri::HTML(open(url))
     artist_array = response.css('ul li a').map {|band| band.text}
     artists = Artist.all
-    artist_array[16..780].each do |band|
+    artist_array[4..92].each do |band|
       if band.include? "["
         next
       elsif Artist.where(name: band).any?
@@ -24,6 +24,42 @@ namespace :db do
         next
       else
         Artist.create(name: band)
+      end
+    end
+  end
+
+
+  desc "seed images!"
+  task :seed_images => :environment do
+
+    Artist.all.each do |artist|
+      if artist.image == nil
+        # artist_name = artist.name.gsub(" ", "").gsub("'", "").gsub("(", "").gsub(")", "").gsub("!", "").gsub("(?", "").gsub("&", "and")
+        # begin
+        #   url = "http://#{artist_name}albumcover.jpg.to"
+        #   images = Nokogiri::HTML(open(url))
+        # # rescue
+        # #   url = "http://#{artist_name}album.jpg.to"
+        # #   images = Nokogiri::HTML(open(url))
+        # # rescue
+        # #   url = "http://#{artist_name}music.jpg.to"
+        # #   images = Nokogiri::HTML(open(url))
+        # rescue
+        #   puts "NOOO: " + artist.name
+        #   artist.update(image: "http://favim.com/orig/201109/01/bed-guitar-shadow-tokio-hotel-tom-kaulitz-Favim.com-135652.jpg")
+        #   next
+        # end
+
+        # if images.css('img')[0] && images.css('img')[0].attribute('src').to_s.length < 255
+        #   artist.update(image: images.css('img')[0].attribute('src').to_s)
+        #   puts "yay: " + artist.name
+        # else
+        artist.update(image: "http://favim.com/orig/201109/01/bed-guitar-shadow-tokio-hotel-tom-kaulitz-Favim.com-135652.jpg")
+        puts "yay: " + artist.name
+
+
+      else
+        puts "already: " + artist.name
       end
     end
   end
