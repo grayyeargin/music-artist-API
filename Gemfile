@@ -40,4 +40,5 @@ gem 'spring',        group: :development
 
 gem 'nokogiri'
 gem 'rails-api'
+gem 'pry'
 

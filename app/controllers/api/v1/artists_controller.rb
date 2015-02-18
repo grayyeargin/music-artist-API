@@ -4,7 +4,7 @@ module Api
 
       def index
         artists = Artist.query(options["query"])
-        render json: artists
+        render json: {artists: artists}
       end
 
        def options
